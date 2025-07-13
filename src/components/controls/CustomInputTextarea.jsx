@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Controller } from "react-hook-form";
 
-export default function CustomTextarea({
+export default function CustomInputTextArea({
   control,
   name,
   label,
@@ -47,7 +47,7 @@ export default function CustomTextarea({
   );
 }
 
-CustomTextarea.propTypes = {
+CustomInputTextArea.propTypes = {
   control: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
