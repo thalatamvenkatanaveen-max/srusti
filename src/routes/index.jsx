@@ -3,6 +3,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import Login from "../Pages/auth/Login";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../Pages/Home/Home";
+import NriAppointment from "../Pages/services/NriAppointment";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +12,10 @@ const router = createBrowserRouter([
   },
   {
     element: <MainLayout />,
-    children: [{ path: "/", element: <Home /> }],
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/nri-appointment", element: <NriAppointment /> },
+    ],
   },
 ]);
 
