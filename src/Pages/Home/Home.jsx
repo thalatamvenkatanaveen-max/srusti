@@ -1,8 +1,7 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import HeroImg from "../../assets/HeroImg.png";
-import PlateImg from "../../assets/plate.jpg";
+import PlateImg from "../../assets/plate.png";
 import SunImg from "../../assets/sun.png";
 import { NAV_ITEMS, zodiacSymbols } from "../../utils/constants";
 
@@ -11,9 +10,9 @@ export default function Home() {
 
   return (
     <div className="section">
-      <section className="mt-12 flex flex-col items-start justify-between md:flex-row">
+      <section className="mt-4 flex flex-col items-start justify-between md:flex-row">
         {/* Hero + Image */}
-        <div className="mx-auto flex flex-1 flex-col items-center justify-between gap-10 lg:flex-row lg:gap-20">
+        <div className="mx-auto mt-12 flex flex-1 flex-col items-center justify-between gap-10 lg:flex-row lg:gap-20">
           <img
             src={HeroImg}
             alt="Astrologer portrait"
@@ -30,13 +29,13 @@ export default function Home() {
         </div>
 
         {/* Card Links */}
-        <aside className="mx-auto px-4 py-8">
-          <ul className="space-y-4">
+        <aside className="mx-auto my-6 px-6">
+          <ul className="space-y-2">
             {NAV_ITEMS.map((card) => (
               <li key={card.path}>
                 <div
                   onClick={() => navigate(card.path)}
-                  className="relative cursor-pointer rounded-lg bg-cover bg-center px-6 py-2 text-2xl font-bold text-red-900 shadow-md transition-transform hover:scale-105"
+                  className="relative cursor-pointer bg-cover bg-center px-8 py-4 text-center text-xl font-bold text-yellow-200 hover:scale-105"
                   style={{ backgroundImage: `url(${PlateImg})` }}
                 >
                   {card.path === "/nri-appointment" && (

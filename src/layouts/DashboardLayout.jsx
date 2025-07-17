@@ -2,7 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const navItems = [
-  { label: "Add Pooja", path: "/dashboard/add-pooja" },
+  { label: "Add Pooja", path: "/dashboard/pooja" },
   { label: "Add Festival", path: "/dashboard/add-festival" },
   { label: "Add Live Events", path: "/dashboard/add-live-events" },
   { label: "Add NRI Slots", path: "/dashboard/add-nri-slots" },
@@ -10,11 +10,11 @@ const navItems = [
 
 export default function DashboardLayout() {
   return (
-    <>
+    <div className="flex h-screen flex-col">
       <Navbar />
-      <div className="flex min-h-screen bg-gray-100">
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-md">
+        <aside className="w-64 overflow-y-auto bg-amber-200 shadow-md">
           <div className="p-6 text-xl font-bold text-amber-600">
             Admin Dashboard
           </div>
@@ -41,10 +41,10 @@ export default function DashboardLayout() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-8">
+        <main className="flex-1 overflow-y-auto bg-white p-6">
           <Outlet />
         </main>
       </div>
-    </>
+    </div>
   );
 }

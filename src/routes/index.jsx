@@ -14,10 +14,12 @@ import Home from "../Pages/Home/Home";
 import NriAppointment from "../Pages/services/NriAppointment";
 import EmailHoroscope from "../Pages/services/EmailHoroScope";
 
-import AddPooja from "../Pages/dashboard/AddPooja";
+import AddPooja from "../Pages/dashboard/pooja/AddPooja";
 import AddFestival from "../Pages/dashboard/AddFestival";
 import AddNriSlots from "../Pages/dashboard/AddNriSlots";
 import AddEvents from "../Pages/dashboard/AddEvents";
+import BookPooja from "../Pages/services/BookPooja";
+import Pooja from "../Pages/dashboard/pooja/Pooja";
 
 function requireAuth() {
   // const token = localStorage.getItem("authToken");
@@ -36,13 +38,14 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/nri-appointment", element: <NriAppointment /> },
       { path: "/email-horoscope", element: <EmailHoroscope /> },
+      { path: "/book-pooja", element: <BookPooja /> },
     ],
   },
   {
     path: "/dashboard",
     element: requireAuth() || <DashboardLayout />,
     children: [
-      { path: "add-pooja", element: <AddPooja /> },
+      { path: "pooja", element: <AddPooja /> },
       { path: "add-festival", element: <AddFestival /> },
       { path: "add-nri-slots", element: <AddNriSlots /> },
       { path: "add-live-events", element: <AddEvents /> },
