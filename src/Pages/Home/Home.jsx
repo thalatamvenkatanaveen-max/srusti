@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 import HeroImg from "../../assets/HeroImg.png";
 import PlateImg from "../../assets/plate.png";
-import SunImg from "../../assets/sun.png";
-import { NAV_ITEMS, zodiacSymbols } from "../../utils/constants";
+import { NAV_ITEMS } from "../../utils/constants";
+import ZodicWheel from "./ZodicWheel";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -51,28 +51,7 @@ export default function Home() {
         </aside>
 
         {/* Zodiac Wheel */}
-        <div className="pointer-events-none absolute inset-0 -z-1 hidden items-center justify-center md:flex">
-          <div
-            className="relative flex h-[300px] w-[300px] animate-spin items-center justify-center rounded-full opacity-30"
-            style={{ animationDuration: "180s" }}
-          >
-            {zodiacSymbols.map((symbol, i) => {
-              const angle = i * 30;
-              return (
-                <span
-                  key={i}
-                  className="absolute text-5xl"
-                  style={{
-                    transform: `rotate(${angle}deg) translateX(180px) rotate(-${angle}deg)`,
-                  }}
-                >
-                  {symbol}
-                </span>
-              );
-            })}
-            <img src={SunImg} alt="Sun" className="h-56 w-56 object-contain" />
-          </div>
-        </div>
+        <ZodicWheel />
       </section>
     </div>
   );
