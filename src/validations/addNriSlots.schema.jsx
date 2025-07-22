@@ -1,9 +1,9 @@
 import * as yup from "yup";
 
 export const addNriSlotsSchema = yup.object().shape({
-  date: yup.string().required("Appointment date is required"),
+  appointment_date: yup.string().required("Appointment date is required"),
 
-  totalSlots: yup
+  total_appointments: yup
     .number()
     .typeError("Total slots must be a number")
     .positive("Slots must be greater than zero")

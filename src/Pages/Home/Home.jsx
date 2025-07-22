@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <div className="section">
-      <section className="mt-4 flex flex-col items-start justify-between md:flex-row">
+      <section className="mt-4 flex flex-col items-center justify-between md:flex-row lg:items-start">
         {/* Hero + Image */}
         <div className="mx-auto mt-12 flex flex-1 flex-col items-center justify-between gap-10 lg:flex-row lg:gap-20">
           <img
@@ -18,7 +18,7 @@ export default function Home() {
             alt="Astrologer portrait"
             className="h-96 w-auto object-cover"
           />
-          <div className="space-y-4 text-center text-amber-700 lg:mr-32">
+          <div className="space-y-4 text-center text-amber-700 lg:mr-44">
             <h1 className="text-4xl font-bold">ASTROLOGER</h1>
             <h2 className="text-4xl font-semibold">Anantha Chary Guruji</h2>
             <p className="max-w-md text-lg text-amber-500">
@@ -35,7 +35,7 @@ export default function Home() {
               <li key={card.path}>
                 <div
                   onClick={() => navigate(card.path)}
-                  className="relative cursor-pointer bg-cover bg-center px-8 py-4 text-center text-xl font-bold text-yellow-200 hover:scale-105"
+                  className="text-MD relative cursor-pointer bg-cover bg-center px-8 py-4 text-center font-bold text-yellow-200 hover:scale-105"
                   style={{ backgroundImage: `url(${PlateImg})` }}
                 >
                   {card.path === "/nri-appointment" && (

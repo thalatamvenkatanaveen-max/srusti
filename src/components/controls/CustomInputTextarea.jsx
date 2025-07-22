@@ -19,7 +19,7 @@ export default function CustomInputTextArea({
       rules={rules}
       defaultValue={defaultValue}
       render={({ field, fieldState: { error } }) => (
-        <div className={`mb-4 w-full ${className}`}>
+        <div className={`w-full ${className}`}>
           {label && (
             <label
               htmlFor={name}

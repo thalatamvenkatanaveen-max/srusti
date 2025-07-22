@@ -31,7 +31,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-br from-amber-500 via-25% to-amber-500 text-indigo-700">
+    <footer className="mt-10 bg-gradient-to-br from-amber-500 via-25% to-amber-500 text-indigo-700">
       {/* Zodiac Banner */}
       <div className="border-b border-sky-700">
         <div className="section mx-auto px-4 py-6">

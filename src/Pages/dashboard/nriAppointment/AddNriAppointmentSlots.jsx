@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addNriSlotsSchema } from "../../validations/addNriSlots.schema";
 import CustomInputDate from "../../components/controls/CustomInputDate";
-import CustomTextInput from "../../components/controls/CustomInutText";
+import CustomTextInput from "../../components/controls/CustomInputText";
 import { thirtyMinSlots, oneHourSlots } from "../../utils/slotConstants";
+import axios from "axios";
+import CustomInputSelect from "../../components/controls/CustomInputSelect";
 
 export default function AddNriSlots() {
-  const { control, handleSubmit, watch } = useForm({
+  const { control, handleSubmit, watch, reset, setValue } = useForm({
     resolver: yupResolver(addNriSlotsSchema),
-    defaultValues: {
-      date: "",
-      totalSlots: "",
-      duration: "30",
-    },
   });
 
   const required = true;
@@ -28,12 +25,22 @@ export default function AddNriSlots() {
     );
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const payload = {
       ...data,
       slots: selectedSlots,
     };
-    console.log("Submitting to API:", payload);
+    try {
+      const res = await axios.post(
+        "http://localhost:4000/api/nriAppointment",
+        payload,
+      );
+      console.log(res);
+      setSelectedSlots([]);
+      reset();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -44,37 +51,32 @@ export default function AddNriSlots() {
         <CustomInputDate
           control={control}
           label="Appointment Date"
-          name="date"
+          name="appointment_date"
           required={required}
         />
 
         <CustomTextInput
           control={control}
-          name="totalSlots"
+          name="total_appointments"
           label="Total Slots"
           placeholder="e.g., 3"
           required={required}
         />
 
-        {/* Duration Dropdown */}
-        <div>
-          <label className="mb-1 block font-medium text-gray-700">
-            Duration (in minutes) <span className="text-red-500">*</span>
-          </label>
-          <Controller
-            name="duration"
-            control={control}
-            render={({ field }) => (
-              <select
-                {...field}
-                className="w-full rounded-lg border border-gray-500 px-4 py-2 focus:ring-2 focus:ring-amber-600 focus:outline-none"
-              >
-                <option value="30">30 Minutes</option>
-                <option value="60">60 Minutes</option>
-              </select>
-            )}
-          />
-        </div>
+        <CustomInputSelect
+          control={control}
+          name="duration"
+          label="Duration"
+          options={[
+            { label: "30 Minutes", value: "30" },
+            { label: "60 Minutes", value: "60" },
+          ]}
+          required={required}
+          onChange={(e) => {
+            setSelectedSlots([]);
+            setValue("duration", e.target.value);
+          }}
+        />
 
         {/* Slot Checkboxes */}
         <div>

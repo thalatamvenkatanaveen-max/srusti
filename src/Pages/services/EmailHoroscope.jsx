@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import CustomTextInput from "../../components/controls/CustomInutText";
+import CustomTextInput from "../../components/controls/CustomInputText";
 import CustomRadioGroup from "../../components/controls/CustomRadioGroup";
 import CustomInputDate from "../../components/controls/CustomInputDate";
 import CustomTimeInput from "../../components/controls/CustomInputTime";

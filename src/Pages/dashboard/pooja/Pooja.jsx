@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import CustomModal from "../../../components/CustomModal";
+import AddPooja from "./AddPooja";
 
 const Pooja = () => {
   const [poojas, setPoojas] = useState([]);
@@ -7,6 +9,7 @@ const Pooja = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("all");
+  const [visible, setVisible] = useState(false);
 
   const fetchPoojas = async () => {
     try {
@@ -36,13 +39,22 @@ const Pooja = () => {
 
   if (loading) return <div className="py-4 text-center">Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
-
+  const handleClose = () => {
+    setVisible(false);
+  };
   return (
-    <div className="mx-auto max-w-5xl p-6">
+    <div className="">
+      <CustomModal open={visible} handleClose={handleClose} title="Add pooja">
+        <AddPooja />
+      </CustomModal>
+
       {/* Header Section */}
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold">Available Poojas</h2>
-        <button className="rounded bg-amber-600 px-4 py-2 text-white hover:bg-amber-700">
+        <button
+          className="rounded bg-amber-600 px-4 py-2 text-white hover:bg-amber-700"
+          onClick={() => setVisible(true)}
+        >
           Add Pooja
         </button>
       </div>

@@ -18,7 +18,7 @@ export default function CustomRadioGroup({
       rules={rules}
       defaultValue={defaultValue}
       render={({ field, fieldState: { error } }) => (
-        <div className={`mb-4 w-full ${className}`}>
+        <div className={`w-full ${className}`}>
           {label && (
             <p className="mb-1 font-medium text-gray-700">
               {label} {required && <span className="text-red-500">*</span>}

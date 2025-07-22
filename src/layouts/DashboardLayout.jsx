@@ -5,7 +5,7 @@ const navItems = [
   { label: "Add Pooja", path: "/dashboard/pooja" },
   { label: "Add Festival", path: "/dashboard/add-festival" },
   { label: "Add Live Events", path: "/dashboard/add-live-events" },
-  { label: "Add NRI Slots", path: "/dashboard/add-nri-slots" },
+  { label: "NRI Appointments", path: "/dashboard/nri-appointment" },
 ];
 
 export default function DashboardLayout() {
@@ -41,7 +41,7 @@ export default function DashboardLayout() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto bg-white p-6">
+        <main className="flex-1 overflow-y-auto bg-white p-12">
           <Outlet />
         </main>
       </div>
