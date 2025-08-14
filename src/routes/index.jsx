@@ -12,6 +12,7 @@ import Login from "../Pages/auth/Login";
 
 import Home from "../Pages/Home/Home";
 import EmailHoroscope from "../Pages/services/EmailHoroScope";
+import NriAppointmentBooking from "../Pages/services/NriAppointments/NriAppointmentBooking";
 
 import AddFestival from "../Pages/dashboard/AddFestival";
 import AddEvents from "../Pages/dashboard/AddEvents";
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { path: "/", element: <Home /> },
-      // { path: "/nri-appointment", element: <NriAppointment /> },
+      { path: "/nri-appointment-booking", element: <NriAppointmentBooking /> },
       { path: "/email-horoscope", element: <EmailHoroscope /> },
       { path: "/book-pooja", element: <BookPooja /> },
     ],

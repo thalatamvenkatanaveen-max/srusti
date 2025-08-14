@@ -40,3 +40,21 @@ export const zodiacSigns = [
   { name: "Aquarius", symbol: "♒" },
   { name: "Pisces", symbol: "♓" },
 ];
+
+// [
+//   { image: Mesham, alt: "Mesham", color: "Red" }, // Aries
+//   { image: Vrushabham, alt: "Vrushabham", color: "White" }, // Taurus
+//   { image: Midhunam, alt: "Midhunam", color: "Green" }, // Gemini
+
+//   { image: Karkatakam, alt: "Karkatakam", color: "White" }, // Cancer
+//   { image: Simham, alt: "Simham", color: "Gold" }, // Leo
+//   { image: Kanya, alt: "Kanya", color: "Green" }, // Virgo
+
+//   { image: Thula, alt: "Thula", color: "Blue" }, // Libra
+//   { image: Vruschikam, alt: "Vruschikam", color: "Red" }, // Scorpio
+//   { image: Dhanussu, alt: "Dhanussu", color: "Yellow" }, // Sagittarius
+
+//   { image: Makaram, alt: "Makaram", color: "Black" }, // Capricorn
+//   { image: Kumbham, alt: "Kumbham", color: "Blue" }, // Aquarius
+//   { image: Meenam, alt: "Meenam", color: "Sea Green" }, // Pisces
+// ];

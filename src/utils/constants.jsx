@@ -1,5 +1,5 @@
 export const NAV_ITEMS = [
-  { label: "Online Appointment", path: "/nri-appointment" },
+  { label: "Online Appointment", path: "/nri-appointment-booking" },
   { label: "Email Horoscope", path: "/email-horoscope" },
   { label: "Upcoming Festivals", path: "/upcoming-festivals" },
   { label: "Book a Pooja", path: "/book-pooja" },

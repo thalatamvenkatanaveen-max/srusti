@@ -27,11 +27,10 @@ const Footer = () => {
     "Birth Chart Analysis",
     "Gemstone Consultation",
     "Vastu Shastra",
-    "Numerology",
   ];
 
   return (
-    <footer className="mt-10 bg-gradient-to-br from-amber-500 via-25% to-amber-500 text-indigo-700">
+    <footer className="mt-10 bg-gradient-to-br from-sky-900 via-sky-800 to-sky-900 text-white">
       {/* Zodiac Banner */}
       <div className="border-b border-sky-700">
         <div className="section mx-auto px-4 py-6">
@@ -186,7 +185,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-sky-700 bg-amber-500 py-4">
+      <div className="border-t border-sky-700 bg-sky-900 py-4">
         <div className="section mx-auto flex flex-col items-center justify-between space-y-2 md:flex-row md:space-y-0">
           <p className="text-sm text-gray-300">
             © {new Date().getFullYear()} Srusti Astrology Center. All rights
