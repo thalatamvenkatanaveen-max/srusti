@@ -19,9 +19,9 @@ export default function Home() {
             className="h-96 w-auto object-cover"
           />
           <div className="space-y-4 text-center text-amber-700 lg:mr-44">
-            <h1 className="text-4xl font-bold">ASTROLOGER</h1>
+            <h1 className="text-4xl font-bold text-pink-600">ASTROLOGER</h1>
             <h2 className="text-4xl font-semibold">Anantha Chary Guruji</h2>
-            <p className="max-w-md text-lg text-amber-500">
+            <p className="max-w-md text-lg font-bold text-blue-800">
               Spiritual guidance & accurate astrology readings from a trusted
               name. Available globally for online consultations.
             </p>

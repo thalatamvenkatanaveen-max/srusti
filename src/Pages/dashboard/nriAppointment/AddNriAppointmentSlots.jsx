@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addNriSlotsSchema } from "../../../validations/addNriSlots.schema";
@@ -8,8 +8,15 @@ import CustomInputTextArea from "../../../components/controls/CustomInputTextAre
 import { thirtyMinSlots, oneHourSlots } from "../../../utils/slotConstants";
 import axios from "axios";
 import CustomInputSelect from "../../../components/controls/CustomInputSelect";
+import { API_BASE_URL } from "../../../utils/constants";
 
-export default function AddNriSlots({ handleClose }) {
+export default function AddNriSlots({
+  handleClose,
+  isEdit,
+  selectedData,
+  appointments,
+  setAppointments,
+}) {
   const { control, handleSubmit, watch, reset, setValue } = useForm({
     resolver: yupResolver(addNriSlotsSchema),
   });
@@ -20,6 +27,18 @@ export default function AddNriSlots({ handleClose }) {
 
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [slotErr, setSlotErr] = useState("");
+
+  useEffect(() => {
+    if (isEdit) {
+      setValue("appointment_date", selectedData.appointment_date);
+      setValue("total_appointments", selectedData.total_appointments);
+      const updated = selectedData.slots.map(
+        (val) => val.start_time + " - " + val.end_time,
+      );
+      setSelectedSlots(updated);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleSlot = (value) => {
     setSelectedSlots((prev) =>
@@ -45,25 +64,67 @@ export default function AddNriSlots({ handleClose }) {
     });
     const payload = { ...data, slots: updatedSlots };
     try {
-      await axios.post("http://localhost:4000/api/nriAppointment", payload);
+      const res = await axios.post(
+        `${API_BASE_URL}/api/nriAppointment`,
+        payload,
+      );
       setSelectedSlots([]);
       reset();
       handleClose();
+      setAppointments([...appointments, ...res.data.data]);
     } catch (err) {
       setSlotErr("Failed to save. Please try again.");
       console.error(err);
     }
   };
 
+  const onUpdate = async (data) => {
+    try {
+      const updatedSlots = selectedSlots.map((val) => {
+        const [start_time, end_time] = val.split(" - ");
+        return { start_time, end_time };
+      });
+      const payload = {
+        appointment_id: selectedData.appointment_id,
+        slots: updatedSlots,
+        total_appointments: data.total_appointments,
+        notes: data.notes,
+      };
+      const res = await axios.put(
+        `${API_BASE_URL}/api/nriAppointment`,
+        payload,
+      );
+      if (res.status === 200) {
+        const updatedAppointments = appointments.map((appt) => {
+          return appt.appointment_id === selectedData.appointment_id
+            ? res.data.data[0]
+            : appt;
+        });
+        console.log(updatedAppointments, "updatedAppointments");
+        setAppointments(updatedAppointments);
+        handleClose();
+        setSelectedSlots([]);
+        reset();
+      }
+    } catch (err) {
+      setSlotErr("Failed to update. Please try again.");
+      console.log(err);
+    }
+  };
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
+      <form
+        onSubmit={handleSubmit(isEdit ? onUpdate : onSubmit)}
+        noValidate
+        className="space-y-6"
+      >
         {/* Appointment Date */}
         <CustomInputDate
           control={control}
           label="Appointment Date"
           name="appointment_date"
           required={required}
+          disabled={isEdit}
         />
 
         {/* Total Slots */}
@@ -90,6 +151,7 @@ export default function AddNriSlots({ handleClose }) {
             setSelectedSlots([]);
             setValue("duration", e.target.value);
           }}
+          disabled={isEdit}
         />
 
         {/* Price */}
@@ -99,26 +161,28 @@ export default function AddNriSlots({ handleClose }) {
           label="Price"
           placeholder="Enter price"
           defaultValue={1000}
-          disabled
-        />
-
-        {/* Notes */}
-        <CustomInputTextArea
-          control={control}
-          name="notes"
-          label="Notes"
-          placeholder="Additional details about the appointment"
+          disabled={isEdit}
         />
 
         {/* Slots Selection */}
         <div>
-          <p className="mb-3 font-medium text-gray-700">
-            Select Slots ({duration}-minute intervals){" "}
-            <span className="text-red-500">*</span>
-            <span className="ml-3 text-gray-400">
-              {selectedSlots.length} selected
-            </span>
-          </p>
+          <div className="mb-3 flex items-center justify-between font-medium text-gray-700">
+            <div>
+              <span> Select Slots ({duration}-minute intervals)</span>
+              <span className="text-red-500"> *</span>
+              <span className="ml-3 text-gray-400">
+                {selectedSlots.length} selected
+              </span>
+            </div>
+            <button
+              className="cursor-pointer text-blue-400"
+              onClick={() => setSelectedSlots([])}
+              type="button"
+            >
+              clear
+            </button>
+          </div>
+
           <div className="grid max-h-60 grid-cols-2 gap-2 overflow-y-auto rounded-lg border p-3">
             {slotsTemplate.map((slot, idx) => (
               <label
@@ -138,13 +202,21 @@ export default function AddNriSlots({ handleClose }) {
           <p className="text-red-500">{slotErr}</p>
         </div>
 
+        {/* Notes */}
+        <CustomInputTextArea
+          control={control}
+          name="notes"
+          label="Notes"
+          placeholder="Additional details about the appointment"
+        />
+
         {/* Submit */}
         <div className="sticky right-0 bottom-0 left-0 border-t border-gray-300 bg-white py-4">
           <button
             type="submit"
             className="w-full rounded-lg bg-amber-600 py-2 font-semibold text-white transition hover:bg-amber-700"
           >
-            Create Slots
+            {isEdit ? "Update" : "Create"}
           </button>
         </div>
       </form>

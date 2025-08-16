@@ -13,7 +13,6 @@ const MultiStepWizard = ({ steps }) => {
   });
 
   const StepContainer = steps[current].component;
-
   const isFirst = current === 0;
   const isLast = current === steps.length - 1;
 
@@ -31,35 +30,38 @@ const MultiStepWizard = ({ steps }) => {
 
   return (
     <FormProvider {...methods}>
-      <div className="mx-auto max-w-4xl overflow-hidden rounded-lg border bg-amber-50 shadow-md">
-        {/* Step Header */}
-        <div className="mb-4 flex items-center justify-center space-x-4 bg-amber-200 p-8">
-          {steps.map((item, index) => (
-            <div
-              key={index}
-              className={`rounded-full px-3 py-1 text-sm font-semibold transition-colors ${
-                index === current
-                  ? "cursor-pointer bg-amber-600 text-white"
-                  : "cursor-not-allowed bg-amber-100 text-gray-600"
-              }`}
-            >
-              {item.title}
-            </div>
-          ))}
+      {/* Make the outer card a fixed-height, column flex container */}
+      <div className="mx-auto flex h-[90vh] max-w-4xl flex-col overflow-hidden rounded-lg border bg-amber-50 shadow-md">
+        {/* Step Header (non-growing) */}
+        <div className="mb-0 shrink-0">
+          <div className="flex items-center justify-center space-x-4 bg-amber-200 p-6">
+            {steps.map((item, index) => (
+              <div
+                key={index}
+                className={`rounded-full px-3 py-1 text-sm font-semibold transition-colors ${
+                  index === current
+                    ? "cursor-pointer bg-amber-600 text-white"
+                    : "cursor-not-allowed bg-amber-100 text-gray-600"
+                }`}
+              >
+                {item.title}
+              </div>
+            ))}
+          </div>
+
+          {/* Step Title */}
+          <div className="px-8 py-3 text-center text-2xl font-semibold">
+            {steps[current].title}
+          </div>
         </div>
 
-        {/* Step Title */}
-        <div className="text-center text-2xl font-semibold">
-          {steps[current].title}
-        </div>
-
-        {/* Step Content */}
-        <div className="px-8 py-4">
+        {/* Step Content — the ONLY scrollable area, expands to fill remaining height */}
+        <div className="flex-1 overflow-y-auto px-6 pt-2 pb-6">
           <StepContainer setShowSkip={setShowSkip} />
         </div>
 
-        {/* Navigation Buttons */}
-        <div className="flex justify-end gap-4 bg-amber-200 px-8 py-6">
+        {/* Footer Buttons (non-growing, pinned at bottom of the card) */}
+        <div className="flex shrink-0 justify-end gap-4 bg-amber-200 px-8 py-4">
           {!isFirst && (
             <button
               onClick={handlePrevious}
