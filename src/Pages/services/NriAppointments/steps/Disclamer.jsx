@@ -1,10 +1,20 @@
 import { useFormContext } from "react-hook-form";
 import CustomInputCheckbox from "../../../../components/controls/CustomInputCheckbox";
+import CustomInputSelect from "../../../../components/controls/CustomInputSelect";
+import { countries } from "../../../../utils/constants";
 
-const AppointmentDisclamer = () => {
+const Disclamer = () => {
   const { control } = useFormContext();
   return (
     <div>
+      <CustomInputSelect
+        control={control}
+        name="countryzone"
+        label="Country (Timezone)"
+        options={countries}
+        required
+        className="mb-3 w-full sm:w-1/2"
+      />
       <p className="mb-3 text-sm text-gray-700">
         <b>Important:</b> By booking an appointment, you agree to the following
       </p>
@@ -49,4 +59,4 @@ const AppointmentDisclamer = () => {
   );
 };
 
-export default AppointmentDisclamer;
+export default Disclamer;

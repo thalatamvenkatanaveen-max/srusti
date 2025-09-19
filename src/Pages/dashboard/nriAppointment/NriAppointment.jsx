@@ -1,11 +1,13 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import axios from "axios";
 import { thirtyMinSlots } from "../../../utils/slotConstants";
 import CustomModal from "../../../components/CustomModal";
 import AddNriSlots from "./AddNriAppointmentSlots";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { FaCloudUploadAlt } from "react-icons/fa";
+import { FaCalendarTimes, FaSpinner } from "react-icons/fa";
 import { API_BASE_URL } from "../../../utils/constants";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ActionButtons, ConfirmModal, StatusBadge } from "./utils";
 
 export default function NriAppointment() {
   const [appointments, setAppointments] = useState([]);
@@ -17,7 +19,11 @@ export default function NriAppointment() {
   const [selectedData, setSelectedData] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
 
-  console.log(appointments, "appointments");
+  // For confirmation modal
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(() => () => {});
+  const [confirmTitle, setConfirmTitle] = useState("");
+  const [confirmMessage, setConfirmMessage] = useState("");
 
   const fetchAppointmentsData = useCallback(
     async (params = {}, filterLabel = "All") => {
@@ -50,39 +56,61 @@ export default function NriAppointment() {
     setIsEdit(false);
   };
 
-  const filters = [
-    { label: "All", params: {} },
-    { label: "Published", params: { status: "ACTIVE", published: true } },
-    { label: "Active", params: { status: "ACTIVE", published: false } },
-    { label: "Inactive", params: { status: "INACTIVE", published: false } },
-    { label: "Completed", params: { status: "INACTIVE", published: true } },
-  ];
+  const filters = useMemo(
+    () => [
+      { label: "All", params: {} },
+      { label: "Published", params: { status: "ACTIVE", published: true } },
+      { label: "Active", params: { status: "ACTIVE", published: false } },
+      { label: "Inactive", params: { status: "INACTIVE", published: false } },
+      { label: "Completed", params: { status: "INACTIVE", published: true } },
+    ],
+    [],
+  );
 
   const handlePublish = async (id) => {
     try {
       await axios.post(`${API_BASE_URL}/api/nriAppointment/publish`, {
         appointment_id: id,
       });
-      alert("Appointment published successfully");
-      fetchAppointmentsData(); // Refresh list
+      toast.success("Appointment published successfully");
+      fetchAppointmentsData();
     } catch (error) {
       console.error("Error publishing appointment:", error);
-      alert("Failed to publish appointment");
+      toast.error("Failed to publish appointment");
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this appointment?")) {
-      return;
-    }
     try {
       await axios.delete(`${API_BASE_URL}/api/nriAppointment/${id}`);
-      alert("Appointment deleted successfully");
-      fetchAppointmentsData(); // Refresh the list after deletion
+      toast.success("Appointment deleted successfully");
+      fetchAppointmentsData();
     } catch (error) {
       console.error("Error deleting appointment:", error);
-      alert("Failed to delete appointment");
+      toast.error("Failed to delete appointment");
     }
+  };
+
+  // Confirm Delete
+  const confirmDelete = (id) => {
+    setConfirmTitle("Delete Appointment");
+    setConfirmMessage("Are you sure you want to delete this appointment?");
+    setConfirmOpen(true);
+    setConfirmAction(() => () => {
+      handleDelete(id);
+      setConfirmOpen(false);
+    });
+  };
+
+  // Confirm Publish
+  const confirmPublish = (id) => {
+    setConfirmTitle("Publish Appointment");
+    setConfirmMessage("Are you sure you want to publish this appointment?");
+    setConfirmOpen(true);
+    setConfirmAction(() => () => {
+      handlePublish(id);
+      setConfirmOpen(false);
+    });
   };
 
   const handleEdit = (data) => {
@@ -93,6 +121,18 @@ export default function NriAppointment() {
 
   return (
     <div className="p-4 sm:p-6">
+      {/* Toasts */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+
+      {/* Confirmation Modal */}
+      <ConfirmModal
+        open={confirmOpen}
+        title={confirmTitle}
+        message={confirmMessage}
+        onConfirm={confirmAction}
+        onCancel={() => setConfirmOpen(false)}
+      />
+
       {/* Modal */}
       <CustomModal
         open={visible}
@@ -160,7 +200,9 @@ export default function NriAppointment() {
 
       {/* States */}
       {loading && (
-        <div className="p-4 text-center">Loading appointments...</div>
+        <div className="flex items-center justify-center p-6 text-amber-600">
+          <FaSpinner className="mr-2 animate-spin" /> Loading appointments...
+        </div>
       )}
       {error && <div className="p-4 text-center text-red-500">{error}</div>}
 
@@ -168,43 +210,27 @@ export default function NriAppointment() {
       {!loading && !error && (
         <>
           {appointments.length === 0 ? (
-            <div className="p-4 text-center">No appointments found.</div>
+            <div className="flex flex-col items-center justify-center gap-2 p-6 text-gray-500">
+              <FaCalendarTimes size={32} />
+              <p>No appointments found.</p>
+            </div>
           ) : (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {appointments.map((appt) => (
                 <div
                   key={appt.appointment_id}
-                  className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition-transform hover:scale-[1.01] hover:shadow-md"
+                  className="relative rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition-transform hover:scale-[1.01] hover:shadow-md"
                 >
-                  {/* Action Buttons */}
-                  {appt.status === "ACTIVE" && !appt.is_published && (
-                    <div className="mb-3 flex gap-3">
-                      <button
-                        className="flex items-center gap-1 rounded-lg bg-green-500 px-3 py-1 text-white transition hover:bg-green-600"
-                        title="Publish Appointment"
-                        onClick={() => handlePublish(appt.appointment_id)}
-                      >
-                        <FaCloudUploadAlt /> Publish
-                      </button>
-                      <button
-                        className="flex items-center gap-1 rounded-lg bg-blue-500 px-3 py-1 text-white transition hover:bg-blue-600"
-                        title="Edit Appointment"
-                        onClick={() => handleEdit(appt)}
-                      >
-                        <FiEdit /> Edit
-                      </button>
-                      <button
-                        className="flex items-center gap-1 rounded-lg bg-red-500 px-3 py-1 text-sm text-white transition hover:bg-red-600"
-                        title="Delete Appointment"
-                        onClick={() => handleDelete(appt.appointment_id)}
-                      >
-                        <FiTrash2 className="text-base" /> Delete
-                      </button>
-                    </div>
-                  )}
+                  {/* Status Badge */}
+                  <div className="absolute top-5 right-5">
+                    <StatusBadge
+                      status={appt.status}
+                      isPublished={appt.is_published}
+                    />
+                  </div>
 
                   {/* Appointment Details */}
-                  <div className="mb-3 space-y-1 text-sm sm:text-base">
+                  <div className="mt-8 mb-3 space-y-1 text-sm sm:text-base">
                     <p>
                       <strong className="text-gray-700">Date:</strong>{" "}
                       {appt.appointment_date}
@@ -226,7 +252,9 @@ export default function NriAppointment() {
                       {appt.slots.map((slot) => {
                         const formattedTime = `${slot.start_time.split(":")[0]}:${
                           slot.start_time.split(":")[1]
-                        } - ${slot.end_time.split(":")[0]}:${slot.end_time.split(":")[1]}`;
+                        } - ${slot.end_time.split(":")[0]}:${
+                          slot.end_time.split(":")[1]
+                        }`;
                         const slotObj = thirtyMinSlots.find(
                           (val) => val.value === formattedTime,
                         );
@@ -241,6 +269,15 @@ export default function NriAppointment() {
                       })}
                     </ul>
                   </div>
+
+                  {/* Action Buttons */}
+                  {appt.status === "ACTIVE" && !appt.is_published && (
+                    <ActionButtons
+                      onPublish={() => confirmPublish(appt.appointment_id)}
+                      onEdit={() => handleEdit(appt)}
+                      onDelete={() => confirmDelete(appt.appointment_id)}
+                    />
+                  )}
                 </div>
               ))}
             </div>

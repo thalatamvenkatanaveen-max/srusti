@@ -9,6 +9,7 @@ import { thirtyMinSlots, oneHourSlots } from "../../../utils/slotConstants";
 import axios from "axios";
 import CustomInputSelect from "../../../components/controls/CustomInputSelect";
 import { API_BASE_URL } from "../../../utils/constants";
+import { toast } from "react-toastify";
 
 export default function AddNriSlots({
   handleClose,
@@ -27,6 +28,7 @@ export default function AddNriSlots({
 
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [slotErr, setSlotErr] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isEdit) {
@@ -58,23 +60,37 @@ export default function AddNriSlots({
       );
       return;
     }
+
     const updatedSlots = selectedSlots.map((slot) => {
       const value = slot.split(" - ");
       return { start_time: value[0], end_time: value[1] };
     });
+
     const payload = { ...data, slots: updatedSlots };
+
     try {
+      setLoading(true);
+      const id = toast.loading("Saving appointment...");
       const res = await axios.post(
         `${API_BASE_URL}/api/nriAppointment`,
         payload,
       );
-      setSelectedSlots([]);
-      reset();
-      handleClose();
+
       setAppointments([...appointments, ...res.data.data]);
+      reset();
+      setSelectedSlots([]);
+      handleClose();
+      toast.update(id, {
+        render: "Appointment created successfully!",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
     } catch (err) {
-      setSlotErr("Failed to save. Please try again.");
+      toast.error("Failed to save appointment. Please try again.");
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,33 +100,46 @@ export default function AddNriSlots({
         const [start_time, end_time] = val.split(" - ");
         return { start_time, end_time };
       });
+
       const payload = {
         appointment_id: selectedData.appointment_id,
         slots: updatedSlots,
         total_appointments: data.total_appointments,
         notes: data.notes,
       };
+
+      setLoading(true);
+      const id = toast.loading("Updating appointment...");
       const res = await axios.put(
         `${API_BASE_URL}/api/nriAppointment`,
         payload,
       );
+
       if (res.status === 200) {
-        const updatedAppointments = appointments.map((appt) => {
-          return appt.appointment_id === selectedData.appointment_id
+        const updatedAppointments = appointments.map((appt) =>
+          appt.appointment_id === selectedData.appointment_id
             ? res.data.data[0]
-            : appt;
-        });
-        console.log(updatedAppointments, "updatedAppointments");
+            : appt,
+        );
         setAppointments(updatedAppointments);
-        handleClose();
-        setSelectedSlots([]);
         reset();
+        setSelectedSlots([]);
+        handleClose();
+        toast.update(id, {
+          render: "Appointment updated successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
       }
     } catch (err) {
-      setSlotErr("Failed to update. Please try again.");
-      console.log(err);
+      toast.error("Failed to update appointment. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <div>
       <form
@@ -214,9 +243,14 @@ export default function AddNriSlots({
         <div className="sticky right-0 bottom-0 left-0 border-t border-gray-300 bg-white py-4">
           <button
             type="submit"
-            className="w-full rounded-lg bg-amber-600 py-2 font-semibold text-white transition hover:bg-amber-700"
+            disabled={loading}
+            className={`w-full rounded-lg py-2 font-semibold text-white transition ${
+              loading
+                ? "cursor-not-allowed bg-gray-400"
+                : "bg-amber-600 hover:bg-amber-700"
+            }`}
           >
-            {isEdit ? "Update" : "Create"}
+            {loading ? "Please wait..." : isEdit ? "Update" : "Create"}
           </button>
         </div>
       </form>

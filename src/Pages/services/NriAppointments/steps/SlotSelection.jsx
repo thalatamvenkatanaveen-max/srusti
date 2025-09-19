@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import axios from "axios";
 import CustomInputSelect from "../../../../components/controls/CustomInputSelect";
+import { API_BASE_URL } from "../../../../utils/constants";
 
 // Helper to get { label, value, year, monthNum }
 const getMonthOptions = () => {
@@ -18,54 +19,61 @@ const getMonthOptions = () => {
 };
 
 const SlotSelection = () => {
-  const { control, setValue, watch, register } = useFormContext();
-  const selectedAppointmentId = watch("appointment_id");
+  const { control, setValue, register, watch } = useFormContext();
+
+  const allData = watch();
+  console.log(allData, "909090");
 
   const monthOptions = getMonthOptions();
   const [selectedMonth, setSelectedMonth] = useState(monthOptions[0]);
   const [appointments, setAppointments] = useState([]);
   const [slots, setSlots] = useState([]);
+  const [loadingAppointments, setLoadingAppointments] = useState(false);
+  const [loadingSlots, setLoadingSlots] = useState(false);
 
-  const ttr = watch();
-  console.log(ttr);
+  const fetchAppointmentsByMonth = async (monthObj) => {
+    setLoadingAppointments(true);
+    try {
+      const res = await axios.get(
+        `${API_BASE_URL}/api/nriAppointment/published-appointments-month?year=${monthObj.year}&month=${monthObj.monthNum}`,
+      );
+      setAppointments(res.data.data || []);
+      // Reset form values when month changes
+      setValue("appointment_id", "");
+      setValue("selectedSlot", "");
+      setSlots([]);
+    } catch (err) {
+      console.error("Error fetching appointments:", err);
+    } finally {
+      setLoadingAppointments(false);
+    }
+  };
 
-  // Fetch appointments when selectedMonth changes
-  useEffect(() => {
-    const fetchAppointments = async () => {
+  const getSlotsByAppointmentId = useCallback(
+    async (id) => {
+      setLoadingSlots(true);
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/nriAppointment/appointments-by-month?year=${selectedMonth.year}&month=${selectedMonth.monthNum}`,
+          `${API_BASE_URL}/api/nriAppointment/${id}/slots`,
         );
-        const formatted = res.data.map((a) => ({
-          label: a.appointment_date,
-          value: a.appointment_id,
-        }));
-        setAppointments(formatted);
-        setValue("appointment_id", ""); // Reset on month change
-        setSlots([]);
-      } catch (err) {
-        console.error("Error fetching appointments:", err);
-        setAppointments([]);
-      }
-    };
-    fetchAppointments();
-  }, [selectedMonth, setValue]);
-
-  // Fetch slots when appointment is selected
-  useEffect(() => {
-    if (!selectedAppointmentId) return;
-    const fetchSlots = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:4000/api/nriAppointment/appointments/${selectedAppointmentId}/slots`,
-        );
-        setSlots(res.data);
+        setSlots(res.data || []);
+        setValue("selectedSlot", "");
       } catch (err) {
         console.error("Error fetching slots:", err);
+      } finally {
+        setLoadingSlots(false);
       }
-    };
-    fetchSlots();
-  }, [selectedAppointmentId]);
+    },
+    [setValue],
+  );
+
+  console.log();
+
+  useEffect(() => {
+    if (selectedMonth) {
+      fetchAppointmentsByMonth(selectedMonth);
+    }
+  }, [selectedMonth]);
 
   return (
     <div className="w-full">
@@ -86,32 +94,50 @@ const SlotSelection = () => {
           </button>
         ))}
       </div>
-      <p> {appointments.length} appointments</p>
-      <CustomInputSelect
-        name="appointment_id"
-        control={control}
-        label="Select Appointment Date"
-        options={appointments}
-        required
-      />
+
+      {/* Appointments */}
+      {loadingAppointments ? (
+        <p className="text-gray-500">Loading appointments...</p>
+      ) : appointments.length === 0 ? (
+        <p className="text-gray-500">No appointments available</p>
+      ) : (
+        <>
+          <p>{appointments.length} appointments</p>
+          <CustomInputSelect
+            name="appointment_id"
+            control={control}
+            label="Select Appointment Date"
+            options={appointments.map((a) => ({
+              label: a.appointment_date,
+              value: a.appointment_id,
+            }))}
+            onChange={(e) => {
+              setValue("appointment_id", e.target.value);
+              getSlotsByAppointmentId(e.target.value);
+            }}
+            required
+          />
+        </>
+      )}
+
+      {/* Slots */}
       <div className="mt-4">
         <h3 className="mb-2 font-semibold">Available Slots:</h3>
-        {slots.length > 0 ? (
+        {loadingSlots ? (
+          <p className="text-gray-500">Loading slots...</p>
+        ) : slots.length > 0 ? (
           <ul className="pl-5 text-gray-800">
-            {slots.map((slot, idx) => {
+            {slots.map((slot) => {
               const slotVal = slot.start_time + "-" + slot.end_time;
               return (
-                <li key={idx}>
+                <li key={slot.slot_id}>
                   <input
-                    {...register("slotValue", { required: true })}
+                    {...register("selectedSlot", { required: true })}
                     type="radio"
-                    value={slotVal}
-                    id={`slot-${idx}`}
+                    value={slot.slot_id}
+                    id={slot.slot_id}
                   />
-                  <label
-                    htmlFor={`slot-${idx}`}
-                    className="ml-2 cursor-pointer"
-                  >
+                  <label htmlFor={slot.slot_id} className="ml-2 cursor-pointer">
                     {slotVal}
                   </label>
                 </li>

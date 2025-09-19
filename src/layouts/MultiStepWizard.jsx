@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-const MultiStepWizard = ({ steps }) => {
+const MultiStepWizard = ({ steps, handleFinish }) => {
   const [current, setCurrent] = useState(0);
   const [showSkip, setShowSkip] = useState(false);
 
@@ -27,6 +27,9 @@ const MultiStepWizard = ({ steps }) => {
   const handleSkip = () => {
     if (!isLast) setCurrent(current + 1);
   };
+
+  const { getValues } = methods;
+  const formData = getValues();
 
   return (
     <FormProvider {...methods}>
@@ -81,7 +84,7 @@ const MultiStepWizard = ({ steps }) => {
           )}
 
           <button
-            onClick={handleNext}
+            onClick={() => (isLast ? handleFinish(formData) : handleNext())}
             className="rounded bg-amber-600 px-6 py-2 text-sm font-medium text-white hover:bg-amber-700"
           >
             {isLast ? "Submit" : "Next"}

@@ -14,5 +14,13 @@ export const genderOptions = [
   { label: "Other", value: "other" },
 ];
 
+export const countries = [
+  { label: "India", value: "india" },
+  { label: "USA", value: "usa" },
+  { label: "Dubai", value: "dubai" },
+  { label: "Australia", value: "australia" },
+  { label: "UK", value: "uk" },
+];
+
 export const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
