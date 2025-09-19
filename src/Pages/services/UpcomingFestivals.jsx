@@ -1,6 +1,6 @@
 import ComingSoon from "../static/CommingSoon";
 
-const BookPooja = () => {
+const UpcomingFestivals = () => {
   return (
     <div>
       <ComingSoon />
@@ -8,4 +8,4 @@ const BookPooja = () => {
   );
 };
 
-export default BookPooja;
+export default UpcomingFestivals;

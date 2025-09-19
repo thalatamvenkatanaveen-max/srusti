@@ -102,13 +102,7 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
-      {/* <div className="section flex items-center justify-between">
-        <div className="cursor-pointer">Home</div>
-        <div className="flex gap-5">
-          <div className="cursor-pointer">Dahboard</div>
-          <div className="cursor-pointer">Login</div>
-        </div>
-      </div> */}
+
       <div className="section flex items-center justify-between py-3 text-amber-900">
         <Link
           to="/"

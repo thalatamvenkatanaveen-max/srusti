@@ -53,13 +53,13 @@ const MultiStepWizard = ({ steps, handleFinish }) => {
           </div>
 
           {/* Step Title */}
-          <div className="px-8 py-3 text-center text-2xl font-semibold">
+          {/* <div className="px-8 py-3 text-center text-2xl font-semibold">
             {steps[current].title}
-          </div>
+          </div> */}
         </div>
 
         {/* Step Content — the ONLY scrollable area, expands to fill remaining height */}
-        <div className="flex-1 overflow-y-auto px-6 pt-2 pb-6">
+        <div className="flex-1 overflow-y-auto px-6 pt-5 pb-6">
           <StepContainer setShowSkip={setShowSkip} />
         </div>
 

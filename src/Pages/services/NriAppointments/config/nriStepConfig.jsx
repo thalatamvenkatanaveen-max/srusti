@@ -2,10 +2,10 @@ import Conformation from "../steps/Conformation";
 import Disclamer from "../steps/Disclamer";
 import PersonalInfo from "../steps/PersonalInfo";
 import SlotSelection from "../steps/SlotSelection";
-import {
-  disclamerSchema,
-  personalInfoSchema,
-} from "./nriAppointmentValidation.schema";
+// import {
+//   disclamerSchema,
+//   personalInfoSchema,
+// } from "./nriAppointmentValidation.schema";
 
 export const NriAppointmentBookingSteps = [
   {

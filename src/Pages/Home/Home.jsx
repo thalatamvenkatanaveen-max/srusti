@@ -38,7 +38,7 @@ export default function Home() {
                   className="text-MD relative cursor-pointer bg-cover bg-center px-8 py-4 text-center font-bold text-yellow-200 hover:scale-105"
                   style={{ backgroundImage: `url(${PlateImg})` }}
                 >
-                  {card.path === "/nri-appointment" && (
+                  {card.path === "/nri-appointment-booking" && (
                     <span className="absolute -top-2 -right-2 rounded-full bg-red-700 px-3 py-1 text-xs font-semibold text-white">
                       NRI’s Only
                     </span>

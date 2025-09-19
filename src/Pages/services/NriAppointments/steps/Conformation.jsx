@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useFormContext } from "react-hook-form";
 import { API_BASE_URL } from "../../../../utils/constants";
+import { FaUser, FaCalendarAlt, FaMoneyBillWave } from "react-icons/fa";
 
-const Conformation = () => {
+const Confirmation = () => {
   const [slotInfo, setSlotInfo] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const { getValues } = useFormContext();
-  const formData = getValues(); // ✅ Get all values filled so far
+  const formData = getValues(); // ✅ All form values so far
 
   useEffect(() => {
     if (formData.selectedSlot) {
@@ -32,79 +33,119 @@ const Conformation = () => {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      <h2 className="border-b pb-2 text-xl font-bold">
-        Review Your Appointment
-      </h2>
-
-      {/* Step 1: Disclaimer */}
-      <div>
-        <h3 className="text-lg font-semibold">Disclaimer</h3>
-        <p>✅ Terms & Conditions accepted</p>
-        <p>🌍 Country Zone: {formData.countryzone}</p>
+    <div className="space-y-6">
+      {/* Heading */}
+      <div className="text-center">
+        <h2 className="text-3xl font-bold text-amber-800">
+          Review Your Appointment
+        </h2>
+        <p className="mt-2 text-amber-600">
+          Please review your details before proceeding to payment.
+        </p>
       </div>
 
-      {/* Step 2: Personal Info */}
-      <div>
-        <h3 className="text-lg font-semibold">Personal Info</h3>
-        <ul className="space-y-1">
-          <li>
-            <b>Name:</b> {formData.name}
-          </li>
-          <li>
-            <b>Email:</b> {formData.email}
-          </li>
-          <li>
-            <b>Mobile:</b> {formData.mobile}
-          </li>
-          <li>
-            <b>Country:</b> {formData.country}
-          </li>
-          <li>
-            <b>Gender:</b> {formData.gender}
-          </li>
-          <li>
-            <b>Date of Birth:</b> {formData.dob}
-          </li>
-          <li>
-            <b>Place of Birth:</b> {formData.placeOfBirth}
-          </li>
-          <li>
-            <b>Preferred Time:</b> {formData.time}
-          </li>
-        </ul>
+      {/* Personal Information */}
+      <div className="rounded-xl bg-white p-6 shadow-md">
+        <h3 className="mb-4 flex items-center gap-2 border-b pb-2 text-lg font-semibold text-amber-700">
+          <FaUser className="text-amber-500" /> Personal Information
+        </h3>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <p>
+            <span className="font-medium text-gray-600">Name:</span>{" "}
+            {formData.name}
+          </p>
+          <p>
+            <span className="font-medium text-gray-600">Email:</span>{" "}
+            {formData.email}
+          </p>
+          <p>
+            <span className="font-medium text-gray-600">Mobile:</span>{" "}
+            {formData.mobile}
+          </p>
+          <p>
+            <span className="font-medium text-gray-600">Country:</span>{" "}
+            {formData.country}
+          </p>
+          <p>
+            <span className="font-medium text-gray-600">Gender:</span>{" "}
+            {formData.gender}
+          </p>
+          <p>
+            <span className="font-medium text-gray-600">Date of Birth:</span>{" "}
+            {formData.dob}
+          </p>
+          <p>
+            <span className="font-medium text-gray-600">Place of Birth:</span>{" "}
+            {formData.placeOfBirth}
+          </p>
+          <p>
+            <span className="font-medium text-gray-600">Birth Time:</span>{" "}
+            {formData.time}
+          </p>
+        </div>
       </div>
 
-      {/* Step 3: Slot Info */}
-      <div>
-        <h3 className="text-lg font-semibold">Selected Slot</h3>
+      {/* Appointment Slot */}
+      <div className="rounded-xl bg-white p-6 shadow-md">
+        <h3 className="mb-4 flex items-center gap-2 border-b pb-2 text-lg font-semibold text-amber-700">
+          <FaCalendarAlt className="text-amber-500" /> Appointment Slot
+        </h3>
         {loading ? (
           <p className="text-gray-500">Loading slot info...</p>
         ) : slotInfo ? (
-          <ul className="space-y-1">
-            <li>
-              <b>Date:</b> {slotInfo.ref_date}
-            </li>
-            <li>
-              <b>Time:</b> {slotInfo.start_time} - {slotInfo.end_time}
-            </li>
-            <li>
-              <b>Status:</b> {slotInfo.status}
-            </li>
-            <li>
-              <b>Price:</b> ₹{(slotInfo.price_in_paise / 100).toLocaleString()}{" "}
-              {slotInfo.currency}
-            </li>
-            <li>
-              <b>Capacity:</b> {slotInfo.capacity}
-            </li>
-          </ul>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <p>
+              <span className="font-medium text-gray-600">Date:</span>{" "}
+              {slotInfo.ref_date}
+            </p>
+            <p>
+              <span className="font-medium text-gray-600">Time:</span>{" "}
+              {slotInfo.start_time} – {slotInfo.end_time}
+            </p>
+            <p>
+              <span className="font-medium text-gray-600">Status:</span>{" "}
+              {slotInfo.status}
+            </p>
+            <p>
+              <span className="font-medium text-gray-600">Capacity:</span>{" "}
+              {slotInfo.capacity}
+            </p>
+          </div>
         ) : (
           <p className="text-red-500">No slot info available</p>
         )}
       </div>
+
+      {/* Payment Summary */}
+      {slotInfo && (
+        <div className="rounded-xl bg-white p-6 shadow-md">
+          <h3 className="mb-4 flex items-center gap-2 border-b pb-2 text-lg font-semibold text-amber-700">
+            <FaMoneyBillWave className="text-green-500" /> Payment Summary
+          </h3>
+          <div className="space-y-3 text-gray-700">
+            <div className="flex items-center justify-between border-b pb-2">
+              <span>Consultation Fee</span>
+              <span className="font-medium">
+                ₹{(slotInfo.price_in_paise / 100).toLocaleString()}{" "}
+                {slotInfo.currency}
+              </span>
+            </div>
+            <div className="flex items-center justify-between border-b pb-2">
+              <span>Convenience Fee</span>
+              <span className="font-medium">₹50</span>
+            </div>
+            <div className="flex items-center justify-between pt-2 text-lg font-bold text-amber-800">
+              <span>Total Payable</span>
+              <span>
+                ₹{(slotInfo.price_in_paise / 100 + 50).toLocaleString()}{" "}
+                {slotInfo.currency}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Conformation;
+export default Confirmation;

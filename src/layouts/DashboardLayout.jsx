@@ -4,9 +4,6 @@ import Navbar from "../components/Navbar";
 import { FiMenu, FiChevronLeft } from "react-icons/fi";
 
 const navItems = [
-  { label: "Add Pooja", path: "/dashboard/pooja" },
-  { label: "Add Festival", path: "/dashboard/add-festival" },
-  { label: "Add Live Events", path: "/dashboard/add-live-events" },
   { label: "NRI Appointments", path: "/dashboard/nri-appointment" },
 ];
 
