@@ -13,6 +13,8 @@ import {
 } from "react-icons/fa";
 import { zodiacSymbols } from "../utils/zodic-symbols";
 import SrustiLogo from "../assets/srusti-logo.png";
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   const quickLinks = [
     { id: "horoscope", label: "Daily Horoscope" },
@@ -45,7 +47,7 @@ const Footer = () => {
                 title={sign.alt}
               >
                 <div className="text-2xl transition-transform group-hover:scale-110">
-                  <img src={sign.image} className="w-10" />
+                  <img src={sign.image} className="w-10" alt={sign.alt} />
                 </div>
                 <span className="hidden text-xs md:block">{sign.alt}</span>
               </button>
@@ -57,9 +59,9 @@ const Footer = () => {
       {/* Main Footer */}
       <div className="section mx-auto grid gap-8 px-4 py-12 md:grid-cols-2 lg:grid-cols-4">
         {/* About */}
-        <div className="">
+        <div>
           <div className="flex items-center">
-            <img src={SrustiLogo} className="w-24" />
+            <img src={SrustiLogo} className="w-24" alt="Srusti Logo" />
             <h3 className="text-2xl font-bold">
               <span className="text-yellow-400">Srusti</span> Astrology
             </h3>
@@ -192,15 +194,15 @@ const Footer = () => {
             reserved.
           </p>
           <div className="flex space-x-6 text-sm text-gray-300">
-            <a href="#" className="hover:text-yellow-400">
+            <Link to="/privacy-policy" className="hover:text-yellow-400">
               Privacy Policy
-            </a>
-            <a href="#" className="hover:text-yellow-400">
-              Terms of Service
-            </a>
-            <a href="#" className="hover:text-yellow-400">
+            </Link>
+            <Link to="/terms-and-conditions" className="hover:text-yellow-400">
+              Terms & Conditions
+            </Link>
+            <Link to="/disclaimer" className="hover:text-yellow-400">
               Disclaimer
-            </a>
+            </Link>
           </div>
         </div>
       </div>

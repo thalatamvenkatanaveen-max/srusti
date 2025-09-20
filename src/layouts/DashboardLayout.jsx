@@ -5,6 +5,7 @@ import { FiMenu, FiChevronLeft } from "react-icons/fi";
 
 const navItems = [
   { label: "NRI Appointments", path: "/dashboard/nri-appointment" },
+  { label: "User Accounts", path: "/dashboard/users" },
 ];
 
 export default function DashboardLayout() {

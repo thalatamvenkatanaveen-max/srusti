@@ -71,10 +71,7 @@ export default function AddNriSlots({
     try {
       setLoading(true);
       const id = toast.loading("Saving appointment...");
-      const res = await axios.post(
-        `${API_BASE_URL}/api/nriAppointment`,
-        payload,
-      );
+      const res = await axios.post(`${API_BASE_URL}/nriAppointment`, payload);
 
       setAppointments([...appointments, ...res.data.data]);
       reset();
@@ -110,10 +107,7 @@ export default function AddNriSlots({
 
       setLoading(true);
       const id = toast.loading("Updating appointment...");
-      const res = await axios.put(
-        `${API_BASE_URL}/api/nriAppointment`,
-        payload,
-      );
+      const res = await axios.put(`${API_BASE_URL}/nriAppointment`, payload);
 
       if (res.status === 200) {
         const updatedAppointments = appointments.map((appt) =>

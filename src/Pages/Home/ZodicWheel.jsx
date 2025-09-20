@@ -6,7 +6,7 @@ const ZodicWheel = () => {
     <div className="pointer-events-none absolute inset-0 -z-1 mt-15 hidden items-center justify-center border md:flex">
       <div
         className="relative flex h-[300px] w-[300px] animate-spin items-center justify-center rounded-full opacity-40"
-        style={{ animationDuration: "250s" }}
+        style={{ animationDuration: "300s" }}
       >
         {zodiacSymbols.map((item, i) => {
           const angle = i * 30;

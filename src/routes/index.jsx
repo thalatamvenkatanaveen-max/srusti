@@ -23,6 +23,10 @@ import UpcomingFestivals from "../Pages/services/UpcomingFestivals";
 import Gallery from "../Pages/services/Gallery";
 import LivePrograms from "../Pages/services/LivePrograms";
 import NotFound from "../Pages/static/NotFound";
+import Users from "../Pages/dashboard/users/Users";
+import PrivacyPolicy from "../Pages/static/PrivacyPolicy";
+import TermsAndConditions from "../Pages/static/TermsAndConditions ";
+import Disclaimer from "../Pages/static/Disclaimer";
 
 function requireAuth() {
   // const token = localStorage.getItem("authToken");
@@ -35,6 +39,7 @@ const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [{ path: "/login", element: <Login /> }],
   },
+
   {
     element: <MainLayout />,
     children: [
@@ -48,13 +53,21 @@ const router = createBrowserRouter([
       { path: "/live-programs", element: <LivePrograms /> },
     ],
   },
+
   {
     path: "/dashboard",
     element: requireAuth() || <DashboardLayout />,
-    children: [{ path: "nri-appointment", element: <NriAppointment /> }],
+    children: [
+      { path: "nri-appointment", element: <NriAppointment /> },
+      { path: "users", element: <Users /> },
+    ],
   },
+
+  { path: "/*", element: <NotFound /> },
   { path: "/comming-soon", element: <ComingSoon /> },
-  { path: "/404", element: <NotFound /> },
+  { path: "/privacy-policy", element: <PrivacyPolicy /> },
+  { path: "/terms-and-conditions", element: <TermsAndConditions /> },
+  { path: "/disclaimer", element: <Disclaimer /> },
 ]);
 
 const Routes = () => {

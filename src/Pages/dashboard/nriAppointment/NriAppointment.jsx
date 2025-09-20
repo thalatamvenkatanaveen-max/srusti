@@ -33,7 +33,7 @@ export default function NriAppointment() {
         setActiveFilter(filterLabel);
         const query = new URLSearchParams(params).toString();
         const res = await axios.get(
-          `${API_BASE_URL}/api/nriAppointment${query ? `?${query}` : ""}`,
+          `${API_BASE_URL}/nriAppointment${query ? `?${query}` : ""}`,
         );
         setAppointments(res.data.data || res.data);
       } catch (err) {
@@ -69,7 +69,7 @@ export default function NriAppointment() {
 
   const handlePublish = async (id) => {
     try {
-      await axios.post(`${API_BASE_URL}/api/nriAppointment/publish`, {
+      await axios.post(`${API_BASE_URL}/nriAppointment/publish`, {
         appointment_id: id,
       });
       toast.success("Appointment published successfully");
@@ -82,7 +82,7 @@ export default function NriAppointment() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_BASE_URL}/api/nriAppointment/${id}`);
+      await axios.delete(`${API_BASE_URL}/nriAppointment/${id}`);
       toast.success("Appointment deleted successfully");
       fetchAppointmentsData();
     } catch (error) {
