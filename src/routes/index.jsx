@@ -11,7 +11,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Login from "../Pages/auth/Login";
 
 import Home from "../Pages/Home/Home";
-//import EmailHoroscope from "../Pages/services/EmailHoroScope";
+import EmailHoroscope from "../Pages/services/EmailHoroScope";
 import NriAppointmentBooking from "../Pages/services/NriAppointments/NriAppointmentBooking";
 
 import BookPooja from "../Pages/services/BookPooja";
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/nri-appointment-booking", element: <NriAppointmentBooking /> },
-      //{ path: "/email-horoscope", element: <EmailHoroscope /> },
+      { path: "/email-horoscope", element: <EmailHoroscope /> },
       { path: "/vastu-services", element: <VastuServices /> },
       { path: "/upcoming-festivals", element: <UpcomingFestivals /> },
       { path: "/book-pooja", element: <BookPooja /> },
