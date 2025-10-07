@@ -11,7 +11,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Login from "../Pages/auth/Login";
 
 import Home from "../Pages/Home/Home";
-import EmailHoroscope from "../Pages/services/EmailHoroScope";
+import EmailHoroscope from "../Pages/services/EmailHoroscope";
 import NriAppointmentBooking from "../Pages/services/NriAppointments/NriAppointmentBooking";
 
 import BookPooja from "../Pages/services/BookPooja";
