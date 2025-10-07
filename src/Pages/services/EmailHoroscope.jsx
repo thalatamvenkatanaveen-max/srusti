@@ -5,7 +5,7 @@ import CustomTextInput from "../../components/controls/CustomInputText";
 import CustomRadioGroup from "../../components/controls/CustomRadioGroup";
 import CustomInputDate from "../../components/controls/CustomInputDate";
 import CustomTimeInput from "../../components/controls/CustomInputTime";
-import CustomInputTextArea from "../../components/controls/CustomInputTextArea";
+import CustomInputTextArea from "../../components/controls/CustomInputTextarea";
 
 import { genderOptions } from "../../utils/constants";
 import { emailHoroscopeSchema } from "../../validations/emailHoroscope.schema";
