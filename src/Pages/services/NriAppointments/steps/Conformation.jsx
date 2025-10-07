@@ -3,6 +3,7 @@ import axios from "axios";
 import { useFormContext } from "react-hook-form";
 import { API_BASE_URL } from "../../../../utils/constants";
 import { FaUser, FaCalendarAlt, FaMoneyBillWave } from "react-icons/fa";
+import Payment from "../Payment";
 
 const Confirmation = () => {
   const [slotInfo, setSlotInfo] = useState(null);
@@ -144,6 +145,7 @@ const Confirmation = () => {
           </div>
         </div>
       )}
+      <Payment />
     </div>
   );
 };
