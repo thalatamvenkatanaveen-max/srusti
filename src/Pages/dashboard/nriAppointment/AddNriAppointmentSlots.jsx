@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { addNriSlotsSchema } from "../../../validations/addNriSlots.schema";
 import CustomInputDate from "../../../components/controls/CustomInputDate";
 import CustomTextInput from "../../../components/controls/CustomInputText";
-import CustomInputTextArea from "../../../components/controls/CustomInputTextArea";
+import CustomInputTextArea from "../../../components/controls/CustomInputTextarea";
 import { thirtyMinSlots, oneHourSlots } from "../../../utils/slotConstants";
 import axios from "axios";
 import CustomInputSelect from "../../../components/controls/CustomInputSelect";
